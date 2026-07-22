@@ -26,17 +26,17 @@ function prefersReducedMotion() {
  * `property` goes null so the fade+scale exit can finish before unmounting — no abrupt
  * pop-out. Closes on Escape or backdrop click.
  */
-export function PropertyDetailModal({ property, stepDefinitions, onClose }: PropertyDetailModalProps) {
+export function PropertyDetailModal({
+  property,
+  stepDefinitions,
+  onClose,
+}: PropertyDetailModalProps) {
   const [prevProperty, setPrevProperty] = useState(property);
   const [displayProperty, setDisplayProperty] = useState(property);
   const [mounted, setMounted] = useState(Boolean(property));
   const [visible, setVisible] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // React's sanctioned alternative to an effect for "adjust state when a prop
-  // changes": https://react.dev/learn/you-might-not-need-an-effect. Runs during
-  // render (not inside useEffect), so the entrance/exit kick-offs below are
-  // synchronous with the prop change instead of lagging a tick behind it.
   if (property !== prevProperty) {
     setPrevProperty(property);
     if (property) {
@@ -53,7 +53,9 @@ export function PropertyDetailModal({ property, stepDefinitions, onClose }: Prop
   // after the exit branch above sets it false, and the modal could never close.
   useEffect(() => {
     if (!mounted || visible || !property) return undefined;
-    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setVisible(true)));
+    const raf = requestAnimationFrame(() =>
+      requestAnimationFrame(() => setVisible(true)),
+    );
     return () => cancelAnimationFrame(raf);
   }, [mounted, visible, property]);
 
@@ -61,7 +63,10 @@ export function PropertyDetailModal({ property, stepDefinitions, onClose }: Prop
   // prefers-reduced-motion) before actually unmounting.
   useEffect(() => {
     if (!mounted || visible || property) return undefined;
-    const timeout = setTimeout(() => setMounted(false), prefersReducedMotion() ? 0 : TRANSITION_MS);
+    const timeout = setTimeout(
+      () => setMounted(false),
+      prefersReducedMotion() ? 0 : TRANSITION_MS,
+    );
     return () => clearTimeout(timeout);
   }, [mounted, visible, property]);
 
@@ -88,6 +93,13 @@ export function PropertyDetailModal({ property, stepDefinitions, onClose }: Prop
 
   const definitionById = new Map(stepDefinitions.map((def) => [def.id, def]));
 
+  // Order
+  const orderedSteps = [...displayProperty.steps].sort((a, b) => {
+    const orderA = definitionById.get(a.id)?.order ?? Number.MAX_SAFE_INTEGER;
+    const orderB = definitionById.get(b.id)?.order ?? Number.MAX_SAFE_INTEGER;
+    return orderA - orderB;
+  });
+
   return (
     <div
       className={`fixed inset-0 z-50 flex items-end justify-center bg-ink/40 backdrop-blur-sm transition-opacity duration-[220ms] ease-out motion-reduce:opacity-100 motion-reduce:transition-none sm:items-center sm:p-4 ${
@@ -108,7 +120,10 @@ export function PropertyDetailModal({ property, stepDefinitions, onClose }: Prop
       >
         <div className="flex items-start justify-between gap-4 border-b border-stone-200/80 px-6 py-5 sm:px-8">
           <div>
-            <h2 id="property-modal-title" className="font-serif text-2xl text-ink sm:text-3xl">
+            <h2
+              id="property-modal-title"
+              className="font-serif text-2xl text-ink sm:text-3xl"
+            >
               {displayProperty.name}
             </h2>
             <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-stone-500">
@@ -118,7 +133,8 @@ export function PropertyDetailModal({ property, stepDefinitions, onClose }: Prop
               </span>
               <span className="flex items-center gap-1.5">
                 <BedDouble className="h-3.5 w-3.5" strokeWidth={1.75} />
-                {displayProperty.bedrooms} bed{displayProperty.bedrooms === 1 ? "" : "s"}
+                {displayProperty.bedrooms} bed
+                {displayProperty.bedrooms === 1 ? "" : "s"}
               </span>
             </div>
           </div>
@@ -132,20 +148,17 @@ export function PropertyDetailModal({ property, stepDefinitions, onClose }: Prop
           </button>
         </div>
 
-        {/*
-          TODO(phase-2): sort by onboardingStepDefinitions[].order instead of rendering
-          property.steps in dataset order (currently inconsistent per property).
-          TODO(phase-2): guard property.steps === [] (see prop_kingsgate) with an
-          explicit empty-checklist message instead of rendering nothing below.
-        */}
         <div className="flex-1 overflow-y-auto px-6 py-5 sm:px-8">
           <ul className="flex flex-col divide-y divide-stone-200/80">
-            {displayProperty.steps.map((step) => {
+            {orderedSteps.map((step) => {
               const definition = definitionById.get(step.id);
               const meta = getStepStatusMeta(step.status);
 
               return (
-                <li key={step.id} className="flex flex-col gap-2 py-4 first:pt-0 last:pb-0">
+                <li
+                  key={step.id}
+                  className="flex flex-col gap-2 py-4 first:pt-0 last:pb-0"
+                >
                   <div className="flex items-center justify-between gap-4">
                     <span className="text-sm font-medium text-ink">
                       {definition?.label ?? step.id}
@@ -153,10 +166,9 @@ export function PropertyDetailModal({ property, stepDefinitions, onClose }: Prop
                     <StatusPill label={meta.label} tone={meta.tone} />
                   </div>
                   {step.note && (
-                    // TODO(phase-2): action_required steps without a note (see
-                    // prop_eaton's "insurance" step) currently just show no note —
-                    // consider a placeholder like "No additional details provided."
-                    <p className="text-sm leading-relaxed text-stone-500">{step.note}</p>
+                    <p className="text-sm leading-relaxed text-stone-500">
+                      {step.note}
+                    </p>
                   )}
                 </li>
               );
