@@ -47,13 +47,23 @@ const STEP_STATUS_META: Record<string, StatusMeta> = {
   not_started: { label: "Not started", tone: "neutral" },
 };
 
-/**
- * Looks up display metadata for a checklist step's status.
- *
- * TODO(phase-2): dataset statuses aren't guaranteed to be in the legend (see
- * prop_rectory's "on_hold" payout step) — falls back to a neutral pill so nothing
- * breaks, but this should get a deliberate treatment later.
- */
-export function getStepStatusMeta(status: string): StatusMeta {
-  return STEP_STATUS_META[status] ?? { label: status, tone: "neutral" };
+
+/** Turns a raw status key like "on_hold" into a readable label like "On hold". */
+function humaniseStatus(status: string): string {
+  const spaced = status.replace(/[_-]+/g, " ").trim();
+  return spaced.charAt(0).toUpperCase() + spaced.slice(1);
 }
+
+// export function getStepStatusMeta(status: string): StatusMeta {
+//   return STEP_STATUS_META[status] ?? { label: status, tone: "neutral" };
+// }
+
+export function getStepStatusMeta(status: string): StatusMeta {
+  return (
+    STEP_STATUS_META[status] ?? {
+      label: humaniseStatus(status),
+      tone: "neutral",
+    }
+  );
+}
+
