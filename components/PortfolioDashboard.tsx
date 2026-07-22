@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SummaryBar } from "./SummaryBar";
 import { StatusFilterTabs } from "./StatusFilterTabs";
 import { PropertyGrid } from "./PropertyGrid";
 import { PropertyDetailModal } from "./PropertyDetailModal";
+import { DashboardSkeleton } from "./DashboardSkeleton";
 import { derivePropertyStatus, calculatePortfolioProgress } from "@/lib/status";
 import type { Property, StatusFilter, StepDefinition } from "@/lib/types";
 
@@ -22,6 +23,13 @@ export function PortfolioDashboard({
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null,
   );
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const counts = useMemo(() => {
     const result: Record<StatusFilter, number> = {
@@ -48,6 +56,8 @@ export function PortfolioDashboard({
       (property) => derivePropertyStatus(property.steps) === filter,
     );
   }, [properties, filter]);
+
+  if (loading) return <DashboardSkeleton />;
 
   return (
     <div className="flex flex-col gap-5 sm:gap-6">
