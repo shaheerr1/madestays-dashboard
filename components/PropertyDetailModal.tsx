@@ -21,11 +21,6 @@ function prefersReducedMotion() {
   );
 }
 
-/**
- * Full onboarding checklist for one property. Stays mounted for one more beat after
- * `property` goes null so the fade+scale exit can finish before unmounting — no abrupt
- * pop-out. Closes on Escape or backdrop click.
- */
 export function PropertyDetailModal({
   property,
   stepDefinitions,
@@ -47,10 +42,6 @@ export function PropertyDetailModal({
     }
   }
 
-  // Entrance: once mounted with nothing shown yet, flip to visible after two paints
-  // so the "hidden" starting styles apply before the transition runs. Guarded on
-  // `property` too — otherwise this would immediately resurrect `visible` right
-  // after the exit branch above sets it false, and the modal could never close.
   useEffect(() => {
     if (!mounted || visible || !property) return undefined;
     const raf = requestAnimationFrame(() =>
@@ -59,8 +50,6 @@ export function PropertyDetailModal({
     return () => cancelAnimationFrame(raf);
   }, [mounted, visible, property]);
 
-  // Exit: once told to hide, wait for the transition (or skip the wait under
-  // prefers-reduced-motion) before actually unmounting.
   useEffect(() => {
     if (!mounted || visible || property) return undefined;
     const timeout = setTimeout(
@@ -149,31 +138,38 @@ export function PropertyDetailModal({
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 py-5 sm:px-8">
-          <ul className="flex flex-col divide-y divide-stone-200/80">
-            {orderedSteps.map((step) => {
-              const definition = definitionById.get(step.id);
-              const meta = getStepStatusMeta(step.status);
+          {orderedSteps.length === 0 ? (
+            <p className="py-8 text-center text-sm text-stone-500">
+              Onboarding for this property hasn&apos;t started yet. We&apos;ll
+              add the checklist once it&apos;s underway.
+            </p>
+          ) : (
+            <ul className="flex flex-col divide-y divide-stone-200/80">
+              {orderedSteps.map((step) => {
+                const definition = definitionById.get(step.id);
+                const meta = getStepStatusMeta(step.status);
 
-              return (
-                <li
-                  key={step.id}
-                  className="flex flex-col gap-2 py-4 first:pt-0 last:pb-0"
-                >
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-sm font-medium text-ink">
-                      {definition?.label ?? step.id}
-                    </span>
-                    <StatusPill label={meta.label} tone={meta.tone} />
-                  </div>
-                  {step.note && (
-                    <p className="text-sm leading-relaxed text-stone-500">
-                      {step.note}
-                    </p>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+                return (
+                  <li
+                    key={step.id}
+                    className="flex flex-col gap-2 py-4 first:pt-0 last:pb-0"
+                  >
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-sm font-medium text-ink">
+                        {definition?.label ?? step.id}
+                      </span>
+                      <StatusPill label={meta.label} tone={meta.tone} />
+                    </div>
+                    {step.note && (
+                      <p className="text-sm leading-relaxed text-stone-500">
+                        {step.note}
+                      </p>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
         </div>
       </div>
     </div>

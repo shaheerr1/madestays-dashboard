@@ -11,10 +11,15 @@ const TABS: { value: StatusFilter; label: string }[] = [
   { value: "in_progress", label: "In progress" },
   { value: "needs_attention", label: "Needs attention" },
   { value: "live", label: "Live" },
+  { value: "not_started", label: "Not started" },
 ];
 
 /** Status filter tabs. Horizontally scrollable so they stay usable on narrow screens. */
-export function StatusFilterTabs({ value, onChange, counts }: StatusFilterTabsProps) {
+export function StatusFilterTabs({
+  value,
+  onChange,
+  counts,
+}: StatusFilterTabsProps) {
   return (
     <div
       role="group"

@@ -40,7 +40,12 @@ export interface OnboardingData {
 }
 
 /** Derived, portfolio-level status for a property (computed from its steps). */
-export type PropertyStatus = "live" | "needs_attention" | "in_progress";
+
+export type PropertyStatus =
+  | "live"
+  | "needs_attention"
+  | "in_progress"
+  | "not_started";
 
 /** Filter tab values — "all" plus every PropertyStatus. */
 export type StatusFilter = "all" | PropertyStatus;

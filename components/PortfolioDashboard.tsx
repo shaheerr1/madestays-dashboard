@@ -14,9 +14,14 @@ interface PortfolioDashboardProps {
 }
 
 /** Client-side orchestrator: owns filter + selected-property state, derives summary stats. */
-export function PortfolioDashboard({ properties, stepDefinitions }: PortfolioDashboardProps) {
+export function PortfolioDashboard({
+  properties,
+  stepDefinitions,
+}: PortfolioDashboardProps) {
   const [filter, setFilter] = useState<StatusFilter>("all");
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(
+    null,
+  );
 
   const counts = useMemo(() => {
     const result: Record<StatusFilter, number> = {
@@ -24,6 +29,7 @@ export function PortfolioDashboard({ properties, stepDefinitions }: PortfolioDas
       live: 0,
       needs_attention: 0,
       in_progress: 0,
+      not_started: 0,
     };
     for (const property of properties) {
       result[derivePropertyStatus(property.steps)] += 1;
@@ -31,11 +37,16 @@ export function PortfolioDashboard({ properties, stepDefinitions }: PortfolioDas
     return result;
   }, [properties]);
 
-  const overallProgress = useMemo(() => calculatePortfolioProgress(properties), [properties]);
+  const overallProgress = useMemo(
+    () => calculatePortfolioProgress(properties),
+    [properties],
+  );
 
   const filteredProperties = useMemo(() => {
     if (filter === "all") return properties;
-    return properties.filter((property) => derivePropertyStatus(property.steps) === filter);
+    return properties.filter(
+      (property) => derivePropertyStatus(property.steps) === filter,
+    );
   }, [properties, filter]);
 
   return (
@@ -49,7 +60,10 @@ export function PortfolioDashboard({ properties, stepDefinitions }: PortfolioDas
 
       <div className="flex flex-col gap-3">
         <StatusFilterTabs value={filter} onChange={setFilter} counts={counts} />
-        <PropertyGrid properties={filteredProperties} onSelect={setSelectedProperty} />
+        <PropertyGrid
+          properties={filteredProperties}
+          onSelect={setSelectedProperty}
+        />
       </div>
 
       <PropertyDetailModal

@@ -7,15 +7,31 @@
     "accountManager": "Madestays Onboarding Team"
   },
   "onboardingStepDefinitions": [
-    { "id": "property-details", "label": "Property details & description", "order": 1 },
+    {
+      "id": "property-details",
+      "label": "Property details & description",
+      "order": 1
+    },
     { "id": "photography", "label": "Professional photography", "order": 2 },
-    { "id": "safety-certs", "label": "Safety certificates (gas, electrical, EPC)", "order": 3 },
+    {
+      "id": "safety-certs",
+      "label": "Safety certificates (gas, electrical, EPC)",
+      "order": 3
+    },
     { "id": "insurance", "label": "Insurance documentation", "order": 4 },
-    { "id": "ownership", "label": "Proof of ownership & authority to let", "order": 5 },
+    {
+      "id": "ownership",
+      "label": "Proof of ownership & authority to let",
+      "order": 5
+    },
     { "id": "payout", "label": "Payout & banking details", "order": 6 },
     { "id": "pricing", "label": "Pricing strategy sign-off", "order": 7 },
     { "id": "channels", "label": "Channel listing setup", "order": 8 },
-    { "id": "welcome-guide", "label": "Welcome guide & house manual", "order": 9 },
+    {
+      "id": "welcome-guide",
+      "label": "Welcome guide & house manual",
+      "order": 9
+    },
     { "id": "agreement", "label": "Management agreement signed", "order": 10 }
   ],
   "statusLegend": {
@@ -35,8 +51,16 @@
       "steps": [
         { "id": "payout", "status": "in_progress" },
         { "id": "property-details", "status": "complete" },
-        { "id": "welcome-guide", "status": "action_required", "note": "We need the wifi password and any parking instructions to finish the house manual." },
-        { "id": "safety-certs", "status": "action_required", "note": "The EPC on file expired in March. Please upload a current certificate." },
+        {
+          "id": "welcome-guide",
+          "status": "action_required",
+          "note": "We need the wifi password and any parking instructions to finish the house manual."
+        },
+        {
+          "id": "safety-certs",
+          "status": "action_required",
+          "note": "The EPC on file expired in March. Please upload a current certificate."
+        },
         { "id": "agreement", "status": "complete" },
         { "id": "photography", "status": "complete" },
         { "id": "pricing", "status": "in_progress" },
@@ -96,7 +120,11 @@
         { "id": "property-details", "status": "complete" },
         { "id": "photography", "status": "in_progress" },
         { "id": "safety-certs", "status": "complete" },
-        { "id": "insurance", "status": "action_required", "note": "The policy provided does not cover short-term letting. Please send an updated schedule." },
+        {
+          "id": "insurance",
+          "status": "action_required",
+          "note": "The policy provided does not cover short-term letting. Please send an updated schedule."
+        },
         { "id": "ownership", "status": "complete" },
         { "id": "payout", "status": "on_hold" },
         { "id": "pricing", "status": "not_started" },
@@ -117,7 +145,11 @@
         { "id": "photography", "status": "complete" },
         { "id": "safety-certs", "status": "complete" },
         { "id": "insurance", "status": "complete" },
-        { "id": "ownership", "status": "action_required", "note": "The name on the title does not match the account holder. Please provide authority to let." },
+        {
+          "id": "ownership",
+          "status": "action_required",
+          "note": "The name on the title does not match the account holder. Please provide authority to let."
+        },
         { "id": "payout", "status": "in_progress" },
         { "id": "pricing", "status": "complete" },
         { "id": "channels", "status": "in_progress" },
@@ -134,8 +166,16 @@
       "targetGoLiveDate": "2026-06-10",
       "steps": [
         { "id": "property-details", "status": "complete" },
-        { "id": "photography", "status": "action_required", "note": "The shoot was cancelled twice. Please confirm a date that works." },
-        { "id": "safety-certs", "status": "action_required", "note": "Gas safety certificate is missing." },
+        {
+          "id": "photography",
+          "status": "action_required",
+          "note": "The shoot was cancelled twice. Please confirm a date that works."
+        },
+        {
+          "id": "safety-certs",
+          "status": "action_required",
+          "note": "Gas safety certificate is missing."
+        },
         { "id": "insurance", "status": "action_required" },
         { "id": "ownership", "status": "complete" },
         { "id": "payout", "status": "not_started" },
@@ -152,7 +192,9 @@
       "bedrooms": 3,
       "image": "https://picsum.photos/seed/kingsgate/800/600",
       "targetGoLiveDate": "2026-10-01",
-      "steps": []
+      "steps": [
+     
+      ]
     }
   ]
 }
