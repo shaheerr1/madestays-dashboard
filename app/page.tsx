@@ -7,9 +7,6 @@ import type { OnboardingData } from "@/lib/types";
 // exercise the guarding stubs, so a loose cast is more honest than fighting TS here.
 const data = onboardingData as unknown as OnboardingData;
 
-// TODO(phase-2): simulate a network delay (async fetch / setTimeout) and render a
-// skeleton grid while it resolves. Data loads synchronously for now.
-
 export default function Home() {
   const { owner, properties, onboardingStepDefinitions } = data;
   const firstName = owner.name.split(" ")[0];

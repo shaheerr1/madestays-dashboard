@@ -1,6 +1,7 @@
 import { PropertyCard } from "./PropertyCard";
 import { derivePropertyStatus, calculateProgress } from "@/lib/status";
 import type { Property } from "@/lib/types";
+import { SearchX } from "lucide-react";
 
 interface PropertyGridProps {
   properties: Property[];
@@ -10,11 +11,20 @@ interface PropertyGridProps {
 /** Responsive card grid: 1 column mobile, 2 columns tablet, 3 columns desktop. */
 export function PropertyGrid({ properties, onSelect }: PropertyGridProps) {
   if (properties.length === 0) {
-    // TODO(phase-2): design a real empty state (illustration/copy) for when the
-    // active filter matches no properties. Placeholder message for now.
     return (
-      <div className="rounded-2xl border border-dashed border-stone-300 bg-white/40 px-6 py-16 text-center text-stone-500">
-        No properties match this filter.
+      <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-stone-300 bg-white/40 px-6 py-16 text-center">
+        <SearchX
+          className="h-8 w-8 text-stone-400"
+          strokeWidth={1.5}
+          aria-hidden="true"
+        />
+        <p className="text-sm font-medium text-ink">
+          No properties in this view
+        </p>
+        <p className="max-w-xs text-sm text-stone-500">
+          Nothing matches this filter right now. Try another status to see more
+          of your portfolio.
+        </p>
       </div>
     );
   }

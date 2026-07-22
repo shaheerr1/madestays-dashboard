@@ -56,10 +56,6 @@ function humaniseStatus(status: string): string {
   return spaced.charAt(0).toUpperCase() + spaced.slice(1);
 }
 
-// export function getStepStatusMeta(status: string): StatusMeta {
-//   return STEP_STATUS_META[status] ?? { label: status, tone: "neutral" };
-// }
-
 export function getStepStatusMeta(status: string): StatusMeta {
   return (
     STEP_STATUS_META[status] ?? {
