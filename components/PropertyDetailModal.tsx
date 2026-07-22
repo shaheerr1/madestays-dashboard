@@ -160,9 +160,10 @@ export function PropertyDetailModal({
                       </span>
                       <StatusPill label={meta.label} tone={meta.tone} />
                     </div>
-                    {step.note && (
+                    {(step.note || step.status === "action_required") && (
                       <p className="text-sm leading-relaxed text-stone-500">
-                        {step.note}
+                        {step.note ??
+                          "Action needed - your account manager will be in touch with the details."}
                       </p>
                     )}
                   </li>
